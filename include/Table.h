@@ -14,7 +14,9 @@ using std::cout;
 extern const Color darkGreen;
 extern int cellSize;
 class Table {
+
 int counter;
+
    int tableRow ;
    int tableCol ;
    // Drawing
@@ -30,12 +32,15 @@ private:
  
 
    public:
-
-      Table();
+float getSquareSize(){
+	return squareSize;
+}
+Table(int row,int col);
+Table();
 
 void setRowCol(int row,int col);
 
-   void drawBoard();
+void drawBoard();
 
 };
 #endif

@@ -5,6 +5,7 @@
 #include<String>
 
 #include<memory>
+
  ////game headers/////
 #define RAYGUI_IMPLEMENTATION 
 #include<raygui.h>//must add; even if your not using it, (for macro redefinition issue).
@@ -15,8 +16,11 @@
 
 #include"Button.h"
 
+#include"UISTATE.h"
 
-using namespace std;
+#include"HelperFunction.h"
+
+using std::min;
 
 const Color green = {
    173,
@@ -36,17 +40,6 @@ const int cellCount = 12;
 
 const std::string Title = "CHESS ENJOYER";
 
-const char * getString(const std::string title) {
-   const char * titleCStr = title.c_str();
-   return titleCStr;
-}
-
-typedef enum UISTATE {
-   MENU,
-   GAME,
-   SETTEING
-}
-UISTATE;
 
 
 int main() {
@@ -56,77 +49,96 @@ int main() {
    const int screenWidth = 1000;
    const int screenHeight = 1000;
 
-   InitWindow(screenWidth, screenHeight, "Chess Enjoyer");
+   InitWindow(screenWidth, screenHeight, titleCStr);
 
    // Calculate the appropriate cell size based on the screen dimensions and cell count
    cellSize = min(screenWidth / cellCount, screenHeight / cellCount);
 
    std::cout << "cellSize " << cellSize;
-   SetWindowPosition(250, 100);
-   // layout_name: controls initialization
-   //----------------------------------------------------------------------------------
 
-   //----------------------------------------------------------------------------------
+   SetWindowPosition(250, 100);
+
    SetTargetFPS(60);
 
    int textWidth = MeasureText(titleCStr, 40); //game title
    int x = screenWidth / 2 - (textWidth / 2);
 
 
+//////////////////Gui intitilization//////////
 
 //////Start button property////
-      const float buttonWidth = 150;
-   const float buttonHeight = 70;
+   const float startButtonWidth = 150;
+   const float startButtonHeight = 70;
 
    Vector2 bSize;
    Vector2 bPosition;
 
-   bPosition.x = (float) GetScreenWidth() / 2 - (buttonWidth / 2.0f);
-   bPosition.y = (float) GetScreenHeight() / 2 - (buttonHeight / 2.0f);
+   bPosition.x = (float) GetScreenWidth() / 2 - (startButtonWidth / 2.0f);
+   bPosition.y = (float) GetScreenHeight() / 3 - (startButtonHeight / 2.0f);
 
-   bSize.x = buttonWidth;
-   bSize.y = buttonHeight;
+   bSize.x = startButtonWidth;
+   bSize.y = startButtonHeight;
 
    Button startButton("play game", bSize, bPosition);
-////////////////
 
+////////End start button ////////
+
+////End Gui intitilization//////////
+
+
+
+/////////////game initialization/////////
 
    UISTATE ui_state = MENU;
 
-   Table table;
+int tableWidth=3,tableHeight=3;
 
-   // table.setRowCol(50,50);
+   Table table(tableWidth,tableHeight);
 
-   ///game loop////
+   float squareSize=table.getSquareSize();
+
+  std::cout << "squareSize " << squareSize<<'\n';
+
+   float totalWidth,totalHeight;
+
+   totalWidth= (float)squareSize*tableWidth;
+   totalHeight=(float)squareSize*tableHeight;
+
+   std::cout << "totalWidth " << totalWidth<<'\n';
+   std::cout << "totalHeight " << totalHeight<<'\n';
+   // table.setRowCol(20,10);
+
+///End Game initialization////
+
+
+///////game loop////////
    while (!WindowShouldClose()) {
-
-
-      if (ui_state == MENU)
-         startButton.update();//activate listner if button clicked or not 
 
 
       BeginDrawing();
 
       ClearBackground(BLACK);
-      /// Update///
+//////// UI Update ////////
+      if (ui_state == MENU)//will draw a rectangle thats not rounded if nothing is rendered beneath it e.g(chess table)
+         startButton.update();//activate listner if button clicked or not 
 
+      // Handle button if clicked
+      if (startButton.isButtonClicked()) {
+         startButton.buttonClicked = true;//mark button as clicked///
+         ui_state = GAME;
+      }
 
-////drawing////
+////// Drawing ////////
+
       table.drawBoard();
 
-      // Handle button click without drawing the button
-      if (startButton.isButtonClicked()) {
-         startButton.buttonClicked = true;//mark button is clicked///
-         ui_state = GAME;
-      
-      }
 
-      // Draw the button if it was not clicked
-      if (ui_state != GAME) {
+      // Draw the button if it's not clicked
+      if (ui_state != GAME) 
          startButton.draw();
-      }
+      
 
-      DrawText(titleCStr, x, 80, 40, WHITE);
+      DrawText(titleCStr, x, 80, 40, WHITE);//draw Title
 
       DrawFPS(10, 10);
       EndDrawing();
@@ -137,23 +149,4 @@ int main() {
    return 0;
 }
 
-// ////////////Sublime_Build//////////////////
-// {
-//     "cmd": ["gcc", "-o", "$file_base_name", "$file" ,"Table.cpp","Button.cpp",
-//      "-Iraylib-4.5.0_win64_mingw-w64/include","-Lraylib-4.5.0_win64_mingw-w64/lib","-Iinclude",
-//      "-lraylib", "-lopengl32", "-lgdi32", "-lwinmm", "-lstdc++",
-//         "-Wno-enum-compare" ],
-
-//     "working_dir": "$file_path",
-//     "selector": "source.cpp",
-//     "shell": true,
-
-//     "variants": [
-//         {
-//             "name": "Run",
-//             "cmd": ["start", "cmd", "/k", "$file_base_name"]
-//         }
-//     ]
-// }
-////////////////////
 

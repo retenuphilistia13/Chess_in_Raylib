@@ -38,16 +38,17 @@
 
    void Button::draw(){
  // Calculate text position to center it within the rectangle
-        int textWidth = MeasureText(getStringTitle(title), 20);
+        int textWidth = MeasureText(getString(title), 20);
         int textHeight = 20;
         int textX = buttonRec.x + (buttonRec.width - textWidth) / 2;
         int textY = buttonRec.y + (buttonRec.height - textHeight) / 2;
+
         DrawRectangleRounded(buttonRec, 0.2, 0, DARKGRAY);
-        DrawText(getStringTitle(title), textX, textY , 20, RAYWHITE);
+        DrawText(getString(title), textX, textY , 20, RAYWHITE);
    }
 
    void Button::update(){
-       buttonClicked = GuiButton(buttonRec, getStringTitle(title));
+       buttonClicked = GuiButton(buttonRec, getString(title));
    }
 
 bool Button::isButtonClicked(){

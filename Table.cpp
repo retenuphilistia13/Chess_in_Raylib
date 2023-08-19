@@ -1,39 +1,44 @@
 
-#include"Table.h"
+    #include"Table.h"
 
-// #include <raygui.h>
 
-      void Table::adjustSquareSize(){
+
+    void Table::adjustSquareSize(){
         counter=0;
+
          squareSize = (float) cellSize;
 
          totalWidth = (float) tableCol * squareSize;
          totalHeight = (float) tableRow * squareSize;
-const float maxWidth=GetScreenWidth()*0.75;
-const float maxHeight=GetScreenHeight()*0.75;
-int i=0;
-        while (maxWidth+totalWidth > GetScreenWidth()  || maxHeight+totalHeight > GetScreenHeight()  ) {
 
-         squareSize -=  (++i)/cellSize ;//accurate but extensive computation (looping a lot)
+   const float maxWidth=GetScreenWidth()*0.75;//75% of the screen (750)in my case
+   const float maxHeight=GetScreenHeight()*0.75;
+
+    int i=0;
+        while (totalWidth > maxWidth  || totalHeight > maxHeight  ) {
+
+         squareSize -=  (++i)/cellSize ;
         
 
-         //recomputing and assigning the new width and height
+         //recalculating and assigning the new width and height
          totalWidth = tableCol * squareSize;
          totalHeight = tableRow * squareSize;
-counter++;
+    counter++;
         }
         std::cout<<"counter "<<counter<<'\n';
 
-counter=0;
-i=0;
-        while (totalWidth < maxWidth  || totalHeight < maxHeight  ) {
+    counter=0;
+    i=0;
+
+
+        while (totalWidth < maxWidth  && totalHeight < maxHeight  ) {
 
          squareSize +=  (++i)/cellSize ;
-         // squareSize +=  (++i+cellSize)/cellSize ;
+         
 
          totalWidth = tableCol * squareSize;
          totalHeight = tableRow * squareSize;
-counter++;
+    counter++;
         }
         std::cout<<"counter "<<counter<<'\n';
 
@@ -41,18 +46,22 @@ counter++;
 
 
 
-      
-
-
-      Table::Table() {
+    Table::Table() {
     //standart chess table///
-    tableRow = 5;
-    tableCol = 5;
+    tableRow = 8;
+    tableCol = 8;
 
+    adjustSquareSize();
 
-        adjustSquareSize();
+    }
 
-      }
+  Table::Table(int row,int col){
+
+   tableRow=row;
+   tableCol=col;
+
+  adjustSquareSize();
+  }
 
 void Table::setRowCol(int row,int col){
     tableCol=col;
