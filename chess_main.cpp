@@ -106,8 +106,9 @@ int tableWidth=3,tableHeight=3;
 
    std::cout << "totalWidth " << totalWidth<<'\n';
    std::cout << "totalHeight " << totalHeight<<'\n';
-   // table.setRowCol(20,10);
 
+   table.setRowCol(8,8);
+   table.init_cells();
 ///End Game initialization////
 
 

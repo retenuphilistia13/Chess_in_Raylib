@@ -1,11 +1,11 @@
-
 {
-    "cmd": ["gcc", "-o", "$file_base_name", "$file" ,"Table.cpp","Button.cpp","HelperFunction.cpp",
-     "-Iraylib-4.5.0_win64_mingw-w64/include","-Lraylib-4.5.0_win64_mingw-w64/lib","-Iinclude",
+    "cmd": ["gcc", "-o", "chess_main", "chess_main.cpp" ,"src/Table.cpp","src/Button.cpp","src/HelperFunction.cpp",
+     "-Iraylib-4.5.0_win64_mingw-w64/include","-Iinclude",
+     "-Lraylib-4.5.0_win64_mingw-w64/lib",
      "-lraylib", "-lopengl32", "-lgdi32", "-lwinmm", "-lstdc++",
-        "-Wno-enum-compare" ],
+     "-Wno-enum-compare" ],
 
-    "working_dir": "$file_path",
+    "working_dir": "${project_path}",
     "selector": "source.cpp",
     "shell": true,
 
@@ -16,3 +16,4 @@
         }
     ]
 }
+
